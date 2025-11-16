@@ -1,0 +1,49 @@
+{
+    "name": "julienlinard/php-dotenv",
+    "description": "Une librairie PHP simple et moderne pour charger les variables d'environnement depuis un fichier .env",
+    "type": "library",
+    "keywords": [
+        "dotenv",
+        "env",
+        "environment",
+        "variables",
+        "configuration",
+        "php8"
+    ],
+    "homepage": "https://github.com/julien-lin/php-dotenv",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Julien Linard",
+            "email": "julien.linard.dev@gmail.com",
+            "homepage": "https://github.com/julien-lin"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/julien-lin/php-dotenv/issues",
+        "source": "https://github.com/julien-lin/php-dotenv"
+    },
+    "require": {
+        "php": ">=8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "JulienLinard\\Dotenv\\": "src/Dotenv/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "JulienLinard\\Dotenv\\Tests\\": "tests/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.5"
+    },
+    "scripts": {
+        "test": "phpunit",
+        "test-coverage": "phpunit --coverage-text"
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}
+
