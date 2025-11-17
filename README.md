@@ -120,27 +120,151 @@ sur plusieurs lignes"
 - Mode immutable par défaut (ne remplace pas les variables système existantes)
 - Validation des noms de variables (caractères alphanumériques et underscores uniquement)
 
+## 🔗 Intégration avec les autres packages
+
+### Intégration avec core-php
+
+`core-php` inclut automatiquement `php-dotenv`. Utilisez `loadEnv()` pour charger les variables.
+
+```php
+<?php
+
+use JulienLinard\Core\Application;
+
+$app = Application::create(__DIR__);
+
+// Charger le fichier .env
+$app->loadEnv();
+
+// Les variables sont maintenant disponibles dans $_ENV
+$dbHost = $_ENV['DB_HOST'];
+$dbName = $_ENV['DB_NAME'];
+```
+
+### Utilisation standalone
+
+`php-dotenv` peut être utilisé indépendamment de tous les autres packages.
+
+```php
+<?php
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+use JulienLinard\Dotenv\Dotenv;
+
+// Charger le fichier .env
+$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
+// Accéder aux variables
+echo $_ENV['DB_HOST'];
+echo $_ENV['DB_NAME'];
+```
+
+### Utilisation avec d'autres frameworks
+
+```php
+<?php
+
+// Laravel, Symfony, ou n'importe quel framework PHP
+use JulienLinard\Dotenv\Dotenv;
+
+Dotenv::createImmutable(__DIR__)->load();
+
+// Les variables sont maintenant disponibles
+$config = [
+    'database' => [
+        'host' => $_ENV['DB_HOST'],
+        'name' => $_ENV['DB_NAME'],
+        'user' => $_ENV['DB_USER'],
+        'password' => $_ENV['DB_PASS']
+    ]
+];
+```
+
 ## 📚 API Reference
 
-### `Dotenv::createImmutable(string $path): Dotenv`
+### `Dotenv::createImmutable(string $path, string $file = '.env'): Dotenv`
 
 Crée une instance immutable qui ne remplace pas les variables existantes.
 
-### `Dotenv::createMutable(string $path): Dotenv`
+```php
+$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv = Dotenv::createImmutable(__DIR__, '.env.local');
+```
+
+### `Dotenv::createMutable(string $path, string $file = '.env'): Dotenv`
 
 Crée une instance mutable qui remplace les variables existantes.
 
+```php
+$dotenv = Dotenv::createMutable(__DIR__);
+```
+
 ### `load(): void`
 
-Charge le fichier `.env` et définit les variables d'environnement.
+Charge le fichier `.env` et définit les variables d'environnement dans `$_ENV` et `$_SERVER`.
+
+```php
+$dotenv->load();
+```
 
 ### `required(array $variables): Validator`
 
-Valide que les variables spécifiées existent.
+Valide que les variables spécifiées existent. Lance une exception si une variable est manquante.
+
+```php
+$dotenv->required(['DB_HOST', 'DB_NAME', 'DB_USER', 'DB_PASS']);
+```
 
 ### `get(string $key, mixed $default = null): mixed`
 
 Récupère une variable avec une valeur par défaut optionnelle.
+
+```php
+$dbHost = Dotenv::get('DB_HOST', 'localhost');
+$dbPort = Dotenv::get('DB_PORT', 3306);
+```
+
+## 💡 Exemples d'utilisation avancée
+
+### Validation avec valeurs par défaut
+
+```php
+use JulienLinard\Dotenv\Dotenv;
+
+$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
+// Valider avec valeur par défaut
+$dotenv->required(['DB_PORT'])->notEmpty()->defaultTo('3306');
+```
+
+### Chargement conditionnel
+
+```php
+// Charger .env.local si disponible, sinon .env
+$envFile = file_exists(__DIR__ . '/.env.local') ? '.env.local' : '.env';
+$dotenv = Dotenv::createImmutable(__DIR__, $envFile);
+$dotenv->load();
+```
+
+### Utilisation dans un script CLI
+
+```php
+#!/usr/bin/env php
+<?php
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+use JulienLinard\Dotenv\Dotenv;
+
+// Charger les variables d'environnement
+Dotenv::createImmutable(__DIR__)->load();
+
+// Utiliser les variables
+echo "Connexion à la base de données : " . $_ENV['DB_HOST'] . "\n";
+```
 
 ## 🧪 Tests
 
