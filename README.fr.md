@@ -2,6 +2,10 @@
 
 [🇬🇧 Lire en anglais](README.md) | [🇫🇷 Lire en français](README.fr.md)
 
+## 💝 Soutenir le projet
+
+Si ce bundle vous est utile, envisagez de [devenir un sponsor](https://github.com/sponsors/julien-lin) pour soutenir le développement et la maintenance de ce projet open source.
+
 ---
 
 Une librairie PHP simple et moderne pour charger les variables d'environnement depuis un fichier `.env`.
