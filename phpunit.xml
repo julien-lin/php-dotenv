@@ -8,8 +8,6 @@
          failOnRisky="true"
          failOnWarning="true"
          beStrictAboutOutputDuringTests="true"
-         beStrictAboutTodoAnnotatedTests="true"
-         convertDeprecationsToExceptions="true"
          processIsolation="false"
          stopOnFailure="false">
     <testsuites>
@@ -23,4 +21,3 @@
         </include>
     </source>
 </phpunit>
-
